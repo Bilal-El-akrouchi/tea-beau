@@ -1,38 +1,63 @@
 "use client";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import { fetchProducts } from "@/lib/slices/productSlice";
+import { useDispatch, useSelector } from "react-redux";
 
-export default function Produits() {
+const Accueil = () => {
   const dispatch = useDispatch();
-  const { produits, loading, error } = useSelector((state) => state.product); // ✅ "produits" en minuscule
+  const { produits, loading, error } = useSelector((state) => state.product);
 
+  // Charger les produits une seule fois
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  if (loading) return 
-  <h1>
-    <video src="../"></video>
-  </h1>;
-  if (error) return <h1>Erreur : {error}</h1>;
+  // Stocker la valeur de l'input pour filtrer les produits
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Filtrer les produits en fonction de la recherche
+  const filteredProducts = produits.filter((product) =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div>
-      <h1>Liste des produits</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4  ">
-        {produits.length > 0 ? (  // ✅ Vérifie que produits est bien un tableau
-          produits.map((product) => (
-            <div className=" bg-emerald-800 h-[100%] rounded-lg" key={product.id}>
-              <h2> <img src={product.image} alt={product.title} className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 object-cover"/></h2>
-              <h2>{product.title}</h2>
-              <h2>{product.price}</h2>
-            </div>
-          ))
-        ) : (
-          <p>Aucun produit disponible</p>
-        )}
+    <div className="flex flex-col items-center  px-4 ">
+      <div className="h-[30vh]  "></div>
+      {/* Champ de recherche */}
+
+      <div className=" flex justify-center gap-10 w-[100%] ">
+      <input
+        type="text"
+        placeholder="Rechercher un produit..."
+        className="border border-gray-300 rounded-md p-2 mb-4 w-[15%] min-w-[200px] "
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+
+      <input
+        type="text"
+        placeholder="Rechercher un produit..."
+        className="border border-gray-300 rounded-md p-2 mb-4 w-[15%] min-w-[200px] "
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      </div>
+
+      {/* Affichage des produits filtrés */}
+      <div className="grid grid-cols-2 md:grid-cols-3 max-w-[60vw]  gap-4">
+        {filteredProducts.map((product) => (
+          <div key={product.id} className="p-4 border rounded-lg">
+            <img
+              src={product.image}
+              alt={product.title}
+              className="w-full h-32 object-cover"
+            />
+            <h2 className="text-lg font-semibold mt-2">{product.title}</h2>
+          </div>
+        ))}
       </div>
     </div>
   );
-}
+};
+
+export default Accueil;
