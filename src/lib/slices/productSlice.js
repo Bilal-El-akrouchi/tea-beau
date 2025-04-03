@@ -23,7 +23,7 @@ const productSlice = createSlice({
 
 export const fetchProducts = () => (dispatch) => {
     axios
-        .get('https://fakestoreapi.com/products')
+        .get('https://bilal-el-akrouchi.github.io/TeaApi/thes.json')
         .then((response) => {
             dispatch(setProduct(response.data));
             dispatch(setLoading(false));  // ✅ Correction de "setLoeading" -> "setLoading"

@@ -6,6 +6,7 @@ import "./Navbar.css";
 import Image from "next/image";
 import logoColor from "../../../public/img/LOGO2.png";
 import logoWhite from "../../../public/img/logoWhite.png";
+import Link from "next/link";
 
 // Controle du logo selon le scroll
 export default function Navbar() {
@@ -37,23 +38,47 @@ export default function Navbar() {
     <nav className="w-screen h-[7rem] z-10 flex gap-3.5 justify-center items-center fixed text-white bg-gradient-to-b from-black/40 to-white/0">
       <div className="w-100">
         <ul className="flex justify-around">
-          <li>produits</li>
-          <li>a propos</li>
+          <li>
+            <Link href="/TouteLesPages/produits">Produits</Link>
+          </li>
+          <li>
+            <Link href="/ToutesLesPages/aPropo">a propos</Link>
+          </li>
         </ul>
       </div>
 
-      <div>
-        <Image
-          src={scrolled ? logoWhite : logoColor}
-          alt="Logo"
-          className="w-30 animate-spin-and-fade tran"
-        />
-      </div>
+      {/* L O G O  */}
+
+      <Link href="/">
+  <div className="relative w-30 h-30">
+    {/* Logo coloré */}
+    <Image
+      src={logoColor}
+      alt="Logo Coloré"
+      fill
+      style={{ objectFit: "contain" }}
+      className={`transition-opacity duration-500 ${scrolled ? "opacity-0" : "opacity-100"}`}
+    />
+    {/* Logo blanc */}
+    <Image
+      src={logoWhite}
+      alt="Logo Blanc"
+      fill
+      style={{ objectFit: "contain" }}
+      className={`transition-opacity duration-500 absolute top-0 left-0 ${scrolled ? "opacity-100" : "opacity-0"}`}
+    />
+  </div>
+</Link>
+
 
       <div className="w-100">
         <ul className="flex justify-around">
-          <li>liste de souhait</li>
-          <li>shrek</li>
+          <li>
+            <Link href="/ToutesLesPages/aPropos">a propos</Link>
+          </li>
+          <li>
+            <Link href="/ToutesLesPages/shrek">shrek</Link>
+          </li>
         </ul>
       </div>
 
@@ -63,7 +88,9 @@ export default function Navbar() {
           width="30"
           height="30"
           viewBox="0 0 100 100"
-          className={`transition-transform duration-300 ${menuOpen ? "rotate-20" : ""}`}
+          className={`transition-transform duration-300 ${
+            menuOpen ? "rotate-20" : ""
+          }`}
         >
           <g fill="none" stroke="white" strokeWidth="10">
             {/* Première barre */}
@@ -72,7 +99,9 @@ export default function Navbar() {
               y1="20"
               x2="80"
               y2="20"
-              className={`transition-all duration-300 ${menuOpen ? "rotate-45 " : ""}`}
+              className={`transition-all duration-300 ${
+                menuOpen ? "rotate-45 " : ""
+              }`}
             />
             {/* Deuxième barre (celle du milieu) */}
             <line
@@ -80,7 +109,9 @@ export default function Navbar() {
               y1="50"
               x2="80"
               y2="50"
-              className={`transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
+              className={`transition-all duration-300 ${
+                menuOpen ? "opacity-0" : ""
+              }`}
             />
             {/* Troisième barre */}
             <line
@@ -88,7 +119,9 @@ export default function Navbar() {
               y1="80"
               x2="80"
               y2="80"
-              className={`transition-all duration-300 ${menuOpen ? "rotate-[-55deg] " : ""}`}
+              className={`transition-all duration-300 ${
+                menuOpen ? "rotate-[-55deg] " : ""
+              }`}
             />
           </g>
         </svg>
