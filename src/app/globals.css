@@ -12,6 +12,7 @@ body{
     box-sizing: border-box;
     background-color: rgba(96, 130, 96, 0.694);
     flex-direction: column-reverse;
+    /* background-image: url("../../public/img/videoLogo.mp4"); */
 
 }
 @keyframes clignoter {
