@@ -1,131 +1,100 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { increment, decrement } from "../../lib/slices/counterSlice";
-import "./Navbar.css";
+import { useDispatch, useSelector } from "react-redux";
+import Link from "next/link";
 import Image from "next/image";
+import CartModal from "../components/CartModal";
 import logoColor from "../../../public/img/LOGO2.png";
 import logoWhite from "../../../public/img/logoWhite.png";
-import Link from "next/link";
-
-// Controle du logo selon le scroll
+import { toggle } from "@/lib/slices/darkMode";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-
+  const [showCartModal, setShowCartModal] = useState(false);
+  const dispatch = useDispatch() 
+  const dark = useSelector((state) => state.toggle.darkMode)
+  console.log(dark)
   const handleScroll = () => {
-    if (window.scrollY > 140) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
+    setScrolled(window.scrollY > 140);
   };
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Gestion Hamburger
-  const [menuOpen, setMenuOpen] = useState(false);
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+  // Récupérer le contenu du panier
+  const cart = useSelector((state) => state.cart);
+  const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <nav className="w-screen h-[7rem] z-10 flex gap-3.5 justify-center items-center fixed text-white bg-gradient-to-b from-black/40 to-white/0">
-      <div className="w-100">
-        <ul className="flex justify-around">
-          <li>
-            <Link href="/TouteLesPages/produits">Produits</Link>
-          </li>
-          <li>
-            <Link href="/ToutesLesPages/aPropo">a propos</Link>
-          </li>
-        </ul>
-      </div>
+    <>
+      <nav className="w-screen h-[7rem] z-10 flex justify-around items-center fixed text-white bg-gradient-to-b from-black/40 to-white/0 px-4">
+        {/* Liens de navigation */}
+       
+         
+            <div>
+              <Link href="/TouteLesPages/produits">Produits</Link>
+            </div>
+            <div>
+              <Link href="/TouteLesPages/aPropos">À propos</Link>
+            </div>
+          
+     
 
-      {/* L O G O  */}
-
-      <Link href="/">
-  <div className="relative w-30 h-30">
-    {/* Logo coloré */}
-    <Image
-      src={logoColor}
-      alt="Logo Coloré"
-      fill
-      style={{ objectFit: "contain" }}
-      className={`transition-opacity duration-500 ${scrolled ? "opacity-0" : "opacity-100"}`}
-    />
-    {/* Logo blanc */}
-    <Image
-      src={logoWhite}
-      alt="Logo Blanc"
-      fill
-      style={{ objectFit: "contain" }}
-      className={`transition-opacity duration-500 absolute top-0 left-0 ${scrolled ? "opacity-100" : "opacity-0"}`}
-    />
-  </div>
-</Link>
-
-
-      <div className="w-100">
-        <ul className="flex justify-around">
-          <li>
-            <Link href="/ToutesLesPages/aPropos">a propos</Link>
-          </li>
-          <li>
-            <Link href="/ToutesLesPages/shrek">shrek</Link>
-          </li>
-        </ul>
-      </div>
-
-      {/* Hamburger Menu */}
-      <div onClick={toggleMenu} className="cursor-pointer">
-        <svg
-          width="30"
-          height="30"
-          viewBox="0 0 100 100"
-          className={`transition-transform duration-300 ${
-            menuOpen ? "rotate-20" : ""
-          }`}
-        >
-          <g fill="none" stroke="white" strokeWidth="10">
-            {/* Première barre */}
-            <line
-              x1="20"
-              y1="20"
-              x2="80"
-              y2="20"
-              className={`transition-all duration-300 ${
-                menuOpen ? "rotate-45 " : ""
-              }`}
+        {/* Logo */}
+        <Link href="/">
+          <div className="relative w-30 h-30">
+            <Image
+              src={logoColor}
+              alt="Logo Coloré"
+              fill
+              style={{ objectFit: "contain" }}
+              className={`transition-opacity duration-500 ${scrolled ? "opacity-0" : "opacity-100"}`}
             />
-            {/* Deuxième barre (celle du milieu) */}
-            <line
-              x1="20"
-              y1="50"
-              x2="80"
-              y2="50"
-              className={`transition-all duration-300 ${
-                menuOpen ? "opacity-0" : ""
-              }`}
+            <Image
+              src={logoWhite}
+              alt="Logo Blanc"
+              fill
+              style={{ objectFit: "contain" }}
+              className={`transition-opacity duration-500 absolute top-0 left-0 ${scrolled ? "opacity-100" : "opacity-0"}`}
             />
-            {/* Troisième barre */}
-            <line
-              x1="20"
-              y1="80"
-              x2="80"
-              y2="80"
-              className={`transition-all duration-300 ${
-                menuOpen ? "rotate-[-55deg] " : ""
-              }`}
-            />
-          </g>
-        </svg>
-      </div>
-    </nav>
+          </div>
+        </Link>
+
+        {/* Liens supplémentaires et bouton panier */}
+        
+            <div>
+               <button onClick={() => dispatch(toggle())}>DARK MODE</button>
+            </div>
+            {/* Bouton pour ouvrir le modal du panier */}
+            <div>
+              <button onClick={() => setShowCartModal(true)} className="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 7.5M17 13l1.5 7.5M9 21a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z"
+                  />
+                </svg>
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
+                    {totalItems}
+                  </span>
+                )}
+              </button>
+            </div>
+          
+       
+      </nav>
+      {/* Affichage du modal du panier si activé */}
+      {showCartModal && <CartModal onClose={() => setShowCartModal(false)} />}
+    </>
   );
 }

@@ -39,4 +39,6 @@ body{
 h1{
     font-size: 2em;
     font-family: 'NewYork';
-}
+    color: white!important;
+    margin-top: 10%;
+    }

@@ -67,13 +67,13 @@ const Accueil = () => {
 
 
       {/* S E C T I O N     C A R O U S S E L */}
-      <section>
-        <div className="text-white h-screen flex items-center justify-center">
-          <h1 className="text-center static ">Notre Tea Collection</h1>
+      <section className="">
+        <div className="text-white h-[60vh] flex items-center justify-center">
+          <h1 className="text-center sticky ">Notre Tea Collection</h1>
         </div>
 
         {/* Carrousel */}
-        <div className="p-5 bgFloral z-0 bg-fixed top-0 flex items-center justify-center">
+        <div className=" p-5 bgFloral z-0top-0 flex items-center justify-center">
           <div className="carrousel-container w-[75vw] max-h-[80vh] overflow-hidden flex items-center justify-center relative">
             <button onClick={prevItem} className="prev-button">
               <Image
@@ -109,9 +109,30 @@ const Accueil = () => {
           </div>
         </div>
       </section>
+              {/* 5   P R O D U I T    M A P */}
+              <section className="produits p-5 flex flex-col items-center">
+  <h1 className="text-center text-white mb-10">Nos Produits Phares</h1>
+  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+    {produits.slice(0, 5).map((product) => (
+      <div
+        key={product.titre}
+        className="flex flex-col items-center text-white hover:bg-green-100 hover:text-green-900 p-4 rounded-lg shadow-md"
+      >
+        <img
+          src={product.image}
+          alt={product.titre}
+          className="w-[200px] h-[200px] object-cover rounded"
+        />
+        <h2 className="mt-4 font-semibold text-center">{product.titre}</h2>
+        <p className="text-center mt-2">{product.note}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
               {/* M I S E   E N   A V A N T   D E S   P R O D U  I T S */}
               <section className="mieuxNoté flex w-full flex-col items-center p-5">
-        <h1 className="text-center pb-4">Les Mieux Notés</h1>
+        <h1 className="text-center text-white h-[60vh] flex items-center justify-center">Les Mieux Notés</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {bestRatedProducts.map((product) => (
             <div key={product.titre} className="p-4 text-white hover:bg-lime-100 hover:text-emerald-950 shadow-2xl rounded-lg">
